@@ -5,7 +5,7 @@
 
 	<groupId>com.pfernand</groupId>
 	<artifactId>pf-mailler</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<packaging>jar</packaging>
 
 	<name>pf-mailler</name>
@@ -34,6 +34,8 @@
 		<actuator.version>2.0.0.RELEASE</actuator.version>
 		<javax.inject.version>1</javax.inject.version>
 		<mysql-connector.version>6.0.6</mysql-connector.version>
+
+		<docker.image.prefix>pfernand</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -127,6 +129,17 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

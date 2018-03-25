@@ -64,4 +64,28 @@ public class EmailController {
                 .build()
         );
     }
+
+    @ApiOperation("Get all emails")
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "AUTH-TOKEN",
+                    value = "AUTH-TOKEN",
+                    required = true,
+                    dataType = "string",
+                    paramType = "header")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "Accepted"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "MaillerException"),
+    })
+    @RequestMapping(value = "/emails", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity sendEmail() throws Exception {
+        log.debug("GET /emails ");
+        return ResponseEntity.ok(
+                MaillerResponse.builder()
+                        .currentTime(Instant.now(clock).toEpochMilli())
+                        .build()
+        );
+    }
 }

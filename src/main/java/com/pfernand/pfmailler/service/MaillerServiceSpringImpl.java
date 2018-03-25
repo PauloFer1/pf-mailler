@@ -1,13 +1,12 @@
 package com.pfernand.pfmailler.service;
 
+import com.pfernand.pfmailler.domain.EmailSaver;
 import com.pfernand.pfmailler.model.Email;
-import com.pfernand.pfmailler.repository.EmailDAO;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import java.time.LocalDateTime;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.jdbi.v3.core.Jdbi;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -16,12 +15,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 public class MaillerServiceSpringImpl implements MaillerService {
 
     private final JavaMailSender javaMailSender;
-    private final Jdbi jdbi;
+    private final EmailSaver emailSaver;
+
 
     @Inject
-    public MaillerServiceSpringImpl(final JavaMailSender javaMailSender, final Jdbi jdbi) {
+    public MaillerServiceSpringImpl(final JavaMailSender javaMailSender, final EmailSaver emailSaver) {
         this.javaMailSender = javaMailSender;
-        this.jdbi = jdbi;
+        this.emailSaver = emailSaver;
     }
 
     @Override
@@ -41,26 +41,23 @@ public class MaillerServiceSpringImpl implements MaillerService {
         } catch (Exception e) {
             log.error("Email failed to send with params: to[{}], from[{}], subject[{}], body[{}]",
                     to, from, subject, body);
-            throw new MaillerException("Email failed to send");
+            throw new MaillerException("Email failed to send", e);
         }
     }
 
     public void sendSimpleMessageAndSave(Email email) throws MaillerException {
 
-        sendSimpleMessage(
-                email.getTo(),
-                email.getFrom(),
-                email.getSubject(),
-                email.getBody()
-        );
-        email.setSentTime(LocalDateTime.now());
-
         try {
-            jdbi.useExtension(EmailDAO.class, dao -> dao.insertEmail(email));
-        } catch (Exception e) {
-            log.error("Email failed to save with params to[{}], from[{}], subject[{}], body[{}]",
-                    email.getTo(), email.getFrom(), email.getSubject(),  email.getBody());
+            sendSimpleMessage(
+                    email.getTo(),
+                    email.getFrom(),
+                    email.getSubject(),
+                    email.getBody()
+            );
+        } finally {
+            email.setSentTime(LocalDateTime.now());
+            emailSaver.saveEmail(email);
         }
-        log.info("Email from: {} saved", email.getFrom());
     }
+
 }
