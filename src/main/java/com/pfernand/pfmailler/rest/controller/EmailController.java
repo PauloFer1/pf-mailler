@@ -80,7 +80,7 @@ public class EmailController {
             @ApiResponse(code = 500, message = "MaillerException"),
     })
     @RequestMapping(value = "/emails", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity sendEmail() throws Exception {
+    public ResponseEntity getEmails() throws Exception {
         log.debug("GET /emails ");
         return ResponseEntity.ok(
                 MaillerResponse.builder()
