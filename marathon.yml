@@ -1,71 +1,37 @@
-id: /{{app_id}}
-cpus: 0.1
-mem: {{memory}}
-instances: {{instances}}
-constraints:
-  -
-    - "tier"
-    - "CLUSTER"
-    - "private"
-  -
-    - "hostname"
-    - "UNIQUE"
-  -
-    - "az"
-    - "GROUP_BY"
-    - "3"
-container:
-  docker:
-    image: {{docker_image}}:{{version}}
-    network: BRIDGE
-    portMappings:
-      -
-        containerPort: 8080
-    parameters:
-      -
-        key: "label"
-        value: "APP_NAME={{app_id}}"
-      -
-        key: "label"
-        value: "APP_BUILD={{version}}"
-      -
-        key: "label"
-        value: "APP_META={{environment}}"
-      -
-        key: "dns"
-        value: "172.17.0.1"
-healthChecks:
-  -
-    protocol: HTTP
-    path: /health
-    gracePeriodSeconds: 120
-    intervalSeconds: 5
-    timeoutSeconds: 5
-    maxConsecutiveFailures: 5
-labels:
-  environment: "{{environment}}"
-  tags: monitor,internal
-  HAPROXY_GROUP:  "internal"
-  HAPROXY_0_VHOST: "{{haproxy_vhost}}"
-  HAPROXY_0_REDIRECT_TO_HTTPS: true
-env:
-  SPRING_BATCHDATASOURCE_JDBCURL: '{{spring_batch_datasource_url}}'
-  SPRING_BATCHDATASOURCE_USERNAME: '{{spring_batch_datasource_username}}'
-  SPRING_NUTMEGDATASOURCE_JDBCURL: '{{spring_nutmeg_datasource_url}}'
-  SPRING_NUTMEGDATASOURCE_USERNAME: '{{spring_nutmeg_datasource_username}}'
-  SWAGGER_ENABLED: "{{swagger_enabled}}"
-  AMAZONS3CLIENT_REGION: "{{aws_region}}"
-  AMAZONS3CLIENT_BUCKETNAME: "{{aws_s3_bucket_name}}"
-  JASPERREPORTS_SERVERURL: "{{jasper_server_url}}"
-  JASPERREPORTS_DATARESTURL: "{{jasper_server_data_rest}}"
-  NUTCRACKER_SERVER: {{nutcracker_server}}
-  NUTCRACKER_ID: {{nutcracker_id}}
-  NUTCRACKER_KEY: {{nutcracker_key}}
-  NUTCRACKER_DB_PASSWORD_SECRET: "{{nutcracker_db_password_secret_name}}"
-  CORS_ORIGIN_ALLOWED: "{{cors_origin_allowed}}"
-  JAVA_OPTS:
-    -Xmx{{java_heap}}
-    -Xms{{java_heap}}
-    -Denvironment={{environment}}
-    -Dsecurity.token.secret={{nutcracker_auth_jwt_secret_name}}
-    -Dlogging.json.enabled=true
+{
+  "id": "/pf-mailler2",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 512,
+  "disk": 500,
+  "instances": 1,
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "forcePullImage": false,
+      "image": "673832051845.dkr.ecr.eu-west-2.amazonaws.com/pf-mailler:latest",
+      "parameters": [],
+      "privileged": false
+    },
+    "volumes": [],
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 0,
+        "labels": {},
+        "name": "http",
+        "protocol": "tcp",
+        "servicePort": 10001
+      }
+    ]
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "portDefinitions": []
+}
