@@ -3,6 +3,7 @@ package com.pfernand.pfmailler.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Clock;
 import java.util.Properties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,13 +13,16 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 public class EmailConfiguration {
 
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public JavaMailSender getJavaMailSender(
+        @Value("${sender.email}") String emailSender,
+        @Value("${sender.password}") String emailPassword)
+    {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("paulofernandes.tarambola@gmail.com");
-        mailSender.setPassword("snoof00000");
+        mailSender.setUsername(emailSender);
+        mailSender.setPassword(emailPassword);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
