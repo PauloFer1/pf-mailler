@@ -53,9 +53,9 @@ public class EmailController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "MaillerException"),
     })
-    @RequestMapping(value = "/send", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/send", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity sendEmail(@RequestBody final Email emailParameters) throws Exception {
-        log.debug("PUT /send with params: {}", emailParameters.toString());
+        log.debug("POST /send with params: {}", emailParameters.toString());
         maillerServiceSpring.sendSimpleMessageAndSave(emailParameters);
         return ResponseEntity.ok(
                 MaillerResponse.builder()

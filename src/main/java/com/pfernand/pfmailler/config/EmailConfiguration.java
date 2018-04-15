@@ -1,7 +1,5 @@
 package com.pfernand.pfmailler.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Clock;
 import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,15 +29,5 @@ public class EmailConfiguration {
         props.put("mail.debug", "true");
 
         return mailSender;
-    }
-
-    @Bean
-    public Clock clock() {
-        return Clock.systemUTC();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
     }
 }

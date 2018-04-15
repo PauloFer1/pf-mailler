@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @EnableAutoConfiguration
 @Configuration
-@ComponentScan(value = "com.pfernand.pfmailler")
 public class PfMaillerApplication {
 
 	public static void main(String[] args) {
