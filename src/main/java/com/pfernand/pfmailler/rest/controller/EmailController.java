@@ -1,10 +1,11 @@
 package com.pfernand.pfmailler.rest.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pfernand.pfmailler.domain.EmailService;
 import com.pfernand.pfmailler.model.Email;
+import com.pfernand.pfmailler.rest.views.EmailListResponse;
 import com.pfernand.pfmailler.rest.views.MaillerResponse;
-import com.pfernand.pfmailler.service.MaillerServiceSpringImpl;
+import com.pfernand.pfmailler.service.EmailSenderServiceSpringImpl;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -26,17 +27,20 @@ public class EmailController {
 
     private final Clock clock;
     private final ObjectMapper objectMapper;
-    private MaillerServiceSpringImpl maillerServiceSpring;
+    private final EmailSenderServiceSpringImpl maillerServiceSpring;
+    private final EmailService emailService;
 
     @Inject
     public EmailController(
-            Clock clock,
-            ObjectMapper objectMapper,
-            MaillerServiceSpringImpl maillerServiceSpring
+        Clock clock,
+        ObjectMapper objectMapper,
+        EmailSenderServiceSpringImpl maillerServiceSpring,
+        EmailService emailService
     ) {
         this.clock = clock;
         this.objectMapper = objectMapper;
         this.maillerServiceSpring = maillerServiceSpring;
+        this.emailService = emailService;
     }
 
     @ApiOperation("Sends an email without attachement")
@@ -83,9 +87,10 @@ public class EmailController {
     public ResponseEntity getEmails() throws Exception {
         log.debug("GET /emails ");
         return ResponseEntity.ok(
-                MaillerResponse.builder()
-                        .currentTime(Instant.now(clock).toEpochMilli())
-                        .build()
+                EmailListResponse.builder()
+                    .currentTime(Instant.now(clock).toEpochMilli())
+                    .emails(emailService.getEmails())
+                    .build()
         );
     }
 }

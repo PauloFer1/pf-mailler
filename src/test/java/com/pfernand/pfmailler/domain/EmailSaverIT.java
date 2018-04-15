@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class EmailSaverIT {
 
     @Autowired
-    EmailSaver emailSaver;
+    EmailServiceJdbi emailSaver;
 
     @Autowired
     Jdbi jdbi;

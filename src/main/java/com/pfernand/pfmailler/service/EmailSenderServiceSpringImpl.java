@@ -1,6 +1,6 @@
 package com.pfernand.pfmailler.service;
 
-import com.pfernand.pfmailler.domain.EmailSaver;
+import com.pfernand.pfmailler.domain.EmailServiceJdbi;
 import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import java.time.LocalDateTime;
@@ -12,14 +12,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 @Slf4j
 @Named
-public class MaillerServiceSpringImpl implements MaillerService {
+public class EmailSenderServiceSpringImpl implements EmailSenderService {
 
     private final JavaMailSender javaMailSender;
-    private final EmailSaver emailSaver;
+    private final EmailServiceJdbi emailSaver;
 
 
     @Inject
-    public MaillerServiceSpringImpl(final JavaMailSender javaMailSender, final EmailSaver emailSaver) {
+    public EmailSenderServiceSpringImpl(final JavaMailSender javaMailSender, final EmailServiceJdbi emailSaver) {
         this.javaMailSender = javaMailSender;
         this.emailSaver = emailSaver;
     }

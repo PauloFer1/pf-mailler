@@ -1,6 +1,6 @@
 package com.pfernand.pfmailler.service;
 
-import com.pfernand.pfmailler.domain.EmailSaver;
+import com.pfernand.pfmailler.domain.EmailServiceJdbi;
 import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import org.junit.Before;
@@ -23,9 +23,9 @@ public class MaillerServiceSpringImplTest {
     private JavaMailSender javaMailSender;
 
     @Mock
-    private EmailSaver emailSaver;
+    private EmailServiceJdbi emailSaver;
 
-    private MaillerServiceSpringImpl maillerServiceSpring;
+    private EmailSenderServiceSpringImpl maillerServiceSpring;
 
     private static final String FROM_EMAIL = "from@mail.com";
     private static final String TO_EMAIL = "to@mail.com";
@@ -35,7 +35,7 @@ public class MaillerServiceSpringImplTest {
 
     @Before
     public void setUp() {
-        maillerServiceSpring = new MaillerServiceSpringImpl(javaMailSender, emailSaver);
+        maillerServiceSpring = new EmailSenderServiceSpringImpl(javaMailSender, emailSaver);
     }
 
     @Test
