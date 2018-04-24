@@ -36,4 +36,5 @@ public class EmailServiceJdbi implements EmailService {
     public List<Email> getEmails() {
         return jdbi.withExtension( EmailDAO.class, dao -> {return dao.selectAllEmail();});
     }
+
 }

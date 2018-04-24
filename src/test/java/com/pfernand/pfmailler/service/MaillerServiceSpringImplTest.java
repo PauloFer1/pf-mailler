@@ -1,6 +1,7 @@
 package com.pfernand.pfmailler.service;
 
 import com.pfernand.pfmailler.domain.EmailServiceJdbi;
+import com.pfernand.pfmailler.domain.EmailValidatorMx;
 import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import org.junit.Before;
@@ -25,6 +26,9 @@ public class MaillerServiceSpringImplTest {
     @Mock
     private EmailServiceJdbi emailSaver;
 
+    @Mock
+    private EmailValidatorMx emailValidatorMx;
+
     private EmailSenderServiceSpringImpl maillerServiceSpring;
 
     private static final String FROM_EMAIL = "from@mail.com";
@@ -35,7 +39,7 @@ public class MaillerServiceSpringImplTest {
 
     @Before
     public void setUp() {
-        maillerServiceSpring = new EmailSenderServiceSpringImpl(javaMailSender, emailSaver);
+        maillerServiceSpring = new EmailSenderServiceSpringImpl(javaMailSender, emailSaver, emailValidatorMx);
     }
 
     @Test
