@@ -35,11 +35,18 @@ public class MaillerServiceSpringImplTest {
     private static final String TO_EMAIL = "to@mail.com";
     private static final String SUBJECT = "subject";
     private static final String BODY = "body";
+    private Email email;
 
 
     @Before
     public void setUp() {
         maillerServiceSpring = new EmailSenderServiceSpringImpl(javaMailSender, emailSaver, emailValidatorMx);
+        email = Email.builder()
+                .from(FROM_EMAIL)
+                .body(BODY)
+                .to(TO_EMAIL)
+                .subject(SUBJECT)
+                .build();
     }
 
     @Test
@@ -53,7 +60,7 @@ public class MaillerServiceSpringImplTest {
 
         //Then
         assertThatExceptionOfType(MaillerException.class)
-            .isThrownBy(() -> maillerServiceSpring.sendSimpleMessage(FROM_EMAIL, TO_EMAIL, SUBJECT, BODY))
+            .isThrownBy(() -> maillerServiceSpring.sendSimpleMessage(email))
             .withMessageContaining(message);
     }
 
@@ -61,12 +68,6 @@ public class MaillerServiceSpringImplTest {
     public void sendSimpleMessageAndSaveThrowException() throws MaillerException {
         // Given
         String message = "Email failed to send";
-        Email email = Email.builder()
-            .from(FROM_EMAIL)
-            .to(TO_EMAIL)
-            .subject(SUBJECT)
-            .body(BODY)
-            .build();
 
         // When
         Mockito.doThrow(new MailAuthenticationException(message)).when(javaMailSender)
@@ -74,7 +75,7 @@ public class MaillerServiceSpringImplTest {
 
         //Then
         assertThatExceptionOfType(MaillerException.class)
-            .isThrownBy(() -> maillerServiceSpring.sendSimpleMessageAndSave(email))
+            .isThrownBy(() -> maillerServiceSpring.sendSimpleMessage(email))
             .withMessageContaining(message);
         Mockito.verify(emailSaver, Mockito.times(1)).saveEmail(email);
     }
@@ -82,15 +83,9 @@ public class MaillerServiceSpringImplTest {
     @Test
     public void sendSimpleMessageAndSaveAllwaysSaveEmailAndSetTime() throws MaillerException {
         // Given
-        Email email = Email.builder()
-            .from(FROM_EMAIL)
-            .to(TO_EMAIL)
-            .subject(SUBJECT)
-            .body(BODY)
-            .build();
 
         // When
-        maillerServiceSpring.sendSimpleMessageAndSave(email);
+        maillerServiceSpring.sendSimpleMessage(email);
 
         //Then
         assertNotNull(email.getSentTime());

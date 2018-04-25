@@ -14,8 +14,8 @@ public interface EmailDAO extends SqlObject {
 
     String INSERT_EMAIL =
             "insert into " +
-                    "PF_EMAIL(SENT_TIME, TO_EMAIL, FROM_EMAIL, SUBJECT_EMAIL, BODY_EMAIL) " +
-                    "VALUES(:sentTime, :to, :from, :subject, :body)";
+                    "PF_EMAIL(CREATED_AT, TO_EMAIL, FROM_EMAIL, SUBJECT_EMAIL, BODY_EMAIL, SENT_TIME) " +
+                    "VALUES(:createdAt, :to, :from, :subject, :body, :sentTime)";
 
     String SELECT_EMAIL =
             "select " +

@@ -25,5 +25,6 @@ public class Email {
     private String subject;
     private String body;
     @Builder.Default
-    private LocalDateTime sentTime = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime sentTime;
 }

@@ -51,7 +51,7 @@ public class EmailControllerTest {
             .build();
 
         // When
-        Mockito.doNothing().when(maillerServiceSpring).sendSimpleMessageAndSave(email);
+        Mockito.doNothing().when(maillerServiceSpring).sendSimpleMessage(email);
         ResponseEntity response = emailController.sendEmail(email);
 
         // Then
@@ -74,7 +74,7 @@ public class EmailControllerTest {
 
         // When
         Mockito.doThrow(new MaillerException("No can do.."))
-            .when(maillerServiceSpring).sendSimpleMessageAndSave(email);
+            .when(maillerServiceSpring).sendSimpleMessage(email);
 
         // Then
         assertThatExceptionOfType(MaillerException.class)
