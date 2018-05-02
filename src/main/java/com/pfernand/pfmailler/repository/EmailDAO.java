@@ -14,8 +14,8 @@ public interface EmailDAO extends SqlObject {
 
     String INSERT_EMAIL =
             "insert into " +
-                    "PF_EMAIL(CREATED_AT, TO_EMAIL, FROM_EMAIL, SUBJECT_EMAIL, BODY_EMAIL, SENT_TIME) " +
-                    "VALUES(:createdAt, :to, :from, :subject, :body, :sentTime)";
+                    "PF_EMAIL(CREATED_AT, TO_EMAIL, FROM_EMAIL, SUBJECT_EMAIL, BODY_EMAIL, SENT_TIME, IS_VALID) " +
+                    "VALUES(:createdAt, :to, :from, :subject, :body, :sentTime, :valid)";
 
     String SELECT_EMAIL =
             "select " +
@@ -24,6 +24,7 @@ public interface EmailDAO extends SqlObject {
                 "SUBJECT_EMAIL, " +
                 "BODY_EMAIL, " +
                 "SENT_TIME " +
+                    "IS_VALID " +
                 "from PF_EMAIL";
 
     @SqlUpdate(INSERT_EMAIL)

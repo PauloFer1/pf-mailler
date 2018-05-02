@@ -1,4 +1,4 @@
-package com.pfernand.pfmailler.domain;
+package com.pfernand.pfmailler.domain.validation;
 
 import com.pfernand.pfmailler.domain.exceptions.InvalidEmailException;
 import com.pfernand.pfmailler.model.Email;

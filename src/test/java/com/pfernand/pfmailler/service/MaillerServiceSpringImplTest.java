@@ -1,7 +1,7 @@
 package com.pfernand.pfmailler.service;
 
 import com.pfernand.pfmailler.domain.EmailServiceJdbi;
-import com.pfernand.pfmailler.domain.EmailValidatorMx;
+import com.pfernand.pfmailler.domain.validation.EmailValidatorMx;
 import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import org.junit.Before;

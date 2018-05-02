@@ -19,6 +19,7 @@ public class EmailMapper implements RowMapper<Email> {
                 .subject(rs.getString("SUBJECT_EMAIL"))
                 .sentTime(LocalDateTime.parse(rs.getString("SENT_TIME"), formatter))
                 .createdAt(LocalDateTime.parse(rs.getString("CREATED_AT"), formatter))
+                .valid(rs.getBoolean("IS_VALID"))
                 .build();
     }
 }

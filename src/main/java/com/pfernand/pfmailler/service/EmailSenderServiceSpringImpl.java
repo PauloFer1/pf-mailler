@@ -1,7 +1,7 @@
 package com.pfernand.pfmailler.service;
 
 import com.pfernand.pfmailler.domain.EmailServiceJdbi;
-import com.pfernand.pfmailler.domain.EmailValidator;
+import com.pfernand.pfmailler.domain.validation.EmailValidator;
 import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import java.time.LocalDateTime;
@@ -31,6 +31,7 @@ public class EmailSenderServiceSpringImpl implements EmailSenderService {
         log.info("Sending email to: {}", email.getTo());
         try {
             emailValidatorMx.isValidEmail(email);
+            email.setValid(true);
             javaMailSender.send(buildMessage(email));
             email.setSentTime(LocalDateTime.now());
         } catch (MailException e) {

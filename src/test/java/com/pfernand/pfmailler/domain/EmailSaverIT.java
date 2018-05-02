@@ -13,6 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 @ActiveProfiles("test")
 @RunWith(SpringRunner.class)
@@ -26,15 +29,21 @@ public class EmailSaverIT {
     @Autowired
     Jdbi jdbi;
 
+    private static final String SENT_TIME = "2018-01-01 10:10:10";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Test
     public void saveEmailStoreInDb() throws MaillerException {
         // Given
         Email email = Email.builder()
-            .from("test.from@mail.com")
-            .to("test.to@mail.com")
-            .body("Body text")
-            .subject("subject")
-            .build();
+                .from("test.from@mail.com")
+                .to("test.to@mail.com")
+                .body("Body text")
+                .subject("subject")
+                .createdAt(LocalDateTime.parse(SENT_TIME, formatter))
+                .sentTime(LocalDateTime.parse(SENT_TIME, formatter))
+                .valid(true)
+                .build();
 
         // When
         emailSaver.saveEmail(email);
@@ -51,7 +60,9 @@ public class EmailSaverIT {
                 "\tTO_EMAIL AS `to`,\n" +
                 "  SUBJECT_EMAIL AS subject, \n" +
                 "\tBODY_EMAIL AS body, \n" +
-                "\tSENT_TIME\n" +
+                "\tSENT_TIME AS sentTime, \n" +
+                    "IS_VALID AS valid, " +
+                    "CREATED_AT AS createdAt " +
                 "FROM PF_EMAIL;")
             .mapToBean(Email.class).findFirst()).get();
     }

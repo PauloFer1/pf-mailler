@@ -88,8 +88,6 @@ public class EmailControllerTest {
 
         // When
         ResponseEntity response = emailController.getEmails();
-        Mockito.when(emailService.getEmails())
-            .thenReturn(Arrays.asList());
 
         // Then
         assertThat(response.getStatusCode())
