@@ -13,13 +13,13 @@ public class EmailMapper implements RowMapper<Email> {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return Email.builder()
-            .from(rs.getString("FROM_EMAIL"))
-            .to(rs.getString("TO_EMAIL"))
-            .body(rs.getString("BODY_EMAIL"))
-            .subject(rs.getString("SUBJECT_EMAIL"))
-            .sentTime(
-                LocalDateTime.parse(rs.getString("SENT_TIME"), formatter)
-            )
-            .build();
+                .from(rs.getString("FROM_EMAIL"))
+                .to(rs.getString("TO_EMAIL"))
+                .body(rs.getString("BODY_EMAIL"))
+                .subject(rs.getString("SUBJECT_EMAIL"))
+                .sentTime(LocalDateTime.parse(rs.getString("SENT_TIME"), formatter))
+                .createdAt(LocalDateTime.parse(rs.getString("CREATED_AT"), formatter))
+                .valid(rs.getBoolean("IS_VALID"))
+                .build();
     }
 }

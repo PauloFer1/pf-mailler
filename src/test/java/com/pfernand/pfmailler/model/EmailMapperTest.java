@@ -30,6 +30,7 @@ public class EmailMapperTest {
     private static final String BODY_EMAIL = "body";
     private static final String SUBJECT_EMAIL = "subject";
     private static final String SENT_TIME = "2018-01-01 10:10:10";
+    private static final boolean VALID = true;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Test
@@ -42,6 +43,8 @@ public class EmailMapperTest {
         Mockito.when(resultSet.getString("BODY_EMAIL")).thenReturn(BODY_EMAIL);
         Mockito.when(resultSet.getString("SUBJECT_EMAIL")).thenReturn(SUBJECT_EMAIL);
         Mockito.when(resultSet.getString("SENT_TIME")).thenReturn(SENT_TIME);
+        Mockito.when(resultSet.getString("CREATED_AT")).thenReturn(SENT_TIME);
+        Mockito.when(resultSet.getBoolean("IS_VALID")).thenReturn(VALID);
         Email email = emailMapper.map(resultSet, statementContext);
 
         // Then
@@ -50,6 +53,8 @@ public class EmailMapperTest {
         assertEquals(email.getBody(), BODY_EMAIL);
         assertEquals(email.getSubject(), SUBJECT_EMAIL);
         assertEquals(email.getSentTime(), LocalDateTime.parse(SENT_TIME, formatter));
+        assertEquals(email.getCreatedAt(), LocalDateTime.parse(SENT_TIME, formatter));
+        assertTrue(email.isValid());
     }
 
 }

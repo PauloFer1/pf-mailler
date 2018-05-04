@@ -60,7 +60,7 @@ public class EmailController {
     @RequestMapping(value = "/send", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity sendEmail(@RequestBody final Email emailParameters) throws Exception {
         log.debug("POST /send with params: {}", emailParameters.toString());
-        maillerServiceSpring.sendSimpleMessageAndSave(emailParameters);
+        maillerServiceSpring.sendSimpleMessage(emailParameters);
         return ResponseEntity.ok(
                 MaillerResponse.builder()
                 .currentTime(Instant.now(clock).toEpochMilli())

@@ -1,5 +1,6 @@
 package com.pfernand.pfmailler.rest.exceptions;
 
+import com.pfernand.pfmailler.domain.exceptions.InvalidEmailException;
 import com.pfernand.pfmailler.rest.views.ErrorResponse;
 import com.pfernand.pfmailler.rest.views.ErrorValue;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,23 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class MaillerExceptionHandler {
 
-    private static final String INVALID_MAILLER_PARAMETERS = "Invalid Mailler Parameters supplied";
+    private static final String INVALID_EMAIL_ERROR = "Invalid Email provided";
     private static final String UNEXPECTED_MAILLER_ERROR = "Unexpected error";
+    private static final String INVALID_MAILLER_PARAMETERS = "Invalid Mailler Parameters supplied";
 
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(
+            final InvalidEmailException ex,
+            final WebRequest request
+    ) {
+        return respond(
+                request,
+                HttpStatus.BAD_REQUEST,
+                ex,
+                INVALID_EMAIL_ERROR
+        );
+    }
 
     @ExceptionHandler(MaillerInvalidParametersException.class)
     public ResponseEntity<ErrorResponse> exceptionHandler(

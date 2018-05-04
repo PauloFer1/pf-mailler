@@ -23,11 +23,10 @@ public class EmailServiceJdbi implements EmailService {
         try {
             jdbi.useExtension(EmailDAO.class, dao -> dao.insertEmail(email));
         } catch (Exception e) {
-            log.error("Email failed to save with params to[{}], from[{}], subject[{}], body[{}]",
-                    email.getTo(), email.getFrom(), email.getSubject(),  email.getBody());
+            log.error("Email failed to save with params: {}, cause: {}", email.toString(), e.getMessage());
             throw new MaillerException(
-                    String.format("Email failed to save with params to[%s], from[%s], subject[%s], body[%s]",
-                            email.getTo(), email.getFrom(), email.getSubject(),  email.getBody()));
+                    String.format("Email failed to save with params: %s, cause: %s", email.toString(), e.getMessage())
+            );
         }
         log.info("Email from: {} saved", email.getFrom());
     }
@@ -36,4 +35,5 @@ public class EmailServiceJdbi implements EmailService {
     public List<Email> getEmails() {
         return jdbi.withExtension( EmailDAO.class, dao -> {return dao.selectAllEmail();});
     }
+
 }
