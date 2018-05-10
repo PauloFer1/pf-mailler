@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Slf4j
-@Named("emailValidatorMx")
-public class EmailValidatorMx implements EmailValidator {
+@Named("emailValidatorRealEmail")
+public class EmailValidatorRealEmail implements EmailValidator {
 
     private static final String REAL_EMAIL_URL = "https://realemail.expeditedaddons.com";
 
@@ -22,7 +22,7 @@ public class EmailValidatorMx implements EmailValidator {
     private final String realEmailApiKey;
 
     @Inject
-    public EmailValidatorMx(RestTemplate restTemplate, @Value("${realemail.api.key}") String realEmailApiKey) {
+    public EmailValidatorRealEmail(RestTemplate restTemplate, @Value("${realemail.api.key}") String realEmailApiKey) {
         this.restTemplate = restTemplate;
         this.realEmailApiKey = realEmailApiKey;
     }

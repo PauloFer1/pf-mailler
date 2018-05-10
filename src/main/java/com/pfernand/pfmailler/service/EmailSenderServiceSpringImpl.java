@@ -22,7 +22,7 @@ public class EmailSenderServiceSpringImpl implements EmailSenderService {
 
     private final JavaMailSender javaMailSender;
     private final EmailServiceJdbi emailSaver;
-    @Qualifier("emailValidatorMx")
+    @Qualifier("emailValidatorJavaMail")
     private final EmailValidator emailValidatorMx;
 
 
