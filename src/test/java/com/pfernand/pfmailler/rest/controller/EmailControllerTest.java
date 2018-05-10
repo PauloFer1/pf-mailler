@@ -6,7 +6,6 @@ import com.pfernand.pfmailler.model.Email;
 import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import com.pfernand.pfmailler.service.EmailSenderServiceSpringImpl;
 import java.time.Clock;
-import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
