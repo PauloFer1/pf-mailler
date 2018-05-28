@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @JsonIgnoreProperties(ignoreUnknown=true)
+@Deprecated
 public class EmailValidation {
     private boolean valid;
     @JsonProperty("is_free_email")

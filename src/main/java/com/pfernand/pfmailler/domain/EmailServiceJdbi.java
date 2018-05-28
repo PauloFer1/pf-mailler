@@ -23,7 +23,6 @@ public class EmailServiceJdbi implements EmailService {
         try {
             jdbi.useExtension(EmailDAO.class, dao -> dao.insertEmail(email));
         } catch (Exception e) {
-            log.error("Email failed to save with params: {}, cause: {}", email.toString(), e.getMessage());
             throw new MaillerException(
                     String.format("Email failed to save with params: %s, cause: %s", email.toString(), e.getMessage())
             );

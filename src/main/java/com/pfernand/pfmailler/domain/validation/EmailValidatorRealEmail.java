@@ -13,6 +13,7 @@ import javax.inject.Named;
 
 @Slf4j
 @Named("emailValidatorRealEmail")
+@Deprecated
 public class EmailValidatorRealEmail implements EmailValidator {
 
     private static final String REAL_EMAIL_URL = "https://realemail.expeditedaddons.com";

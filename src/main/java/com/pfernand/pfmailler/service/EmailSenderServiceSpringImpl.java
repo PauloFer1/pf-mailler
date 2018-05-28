@@ -35,7 +35,6 @@ public class EmailSenderServiceSpringImpl implements EmailSenderService {
             javaMailSender.send(buildMessage(email));
             email.setSentTime(LocalDateTime.now());
         } catch (MailException e) {
-            log.error("Email failed to send with params: {}", email.toString());
             throw new MaillerException("Email failed to send", e);
         } finally {
             email.setCreatedAt(LocalDateTime.now());

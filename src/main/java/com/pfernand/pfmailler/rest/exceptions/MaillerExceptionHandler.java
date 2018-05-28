@@ -50,6 +50,7 @@ public class MaillerExceptionHandler {
             final MaillerException ex,
             final WebRequest request
     ) {
+        log.error("Email Error. Cause: {}", ex.getMessage());
         return respond(
                 request,
                 HttpStatus.INTERNAL_SERVER_ERROR,
