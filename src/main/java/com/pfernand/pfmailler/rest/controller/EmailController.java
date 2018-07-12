@@ -46,8 +46,8 @@ public class EmailController {
     @ApiOperation("Sends an email without attachement")
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name = "AUTH-TOKEN",
-                    value = "AUTH-TOKEN",
+                    name = "Authorization",
+                    value = "Authorization",
                     required = true,
                     dataType = "string",
                     paramType = "header")
@@ -72,8 +72,8 @@ public class EmailController {
     @ApiOperation("Get all emails")
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name = "AUTH-TOKEN",
-                    value = "AUTH-TOKEN",
+                    name = "Authorization",
+                    value = "Authorization",
                     required = true,
                     dataType = "string",
                     paramType = "header")

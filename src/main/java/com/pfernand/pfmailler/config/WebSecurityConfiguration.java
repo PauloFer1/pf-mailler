@@ -1,9 +1,6 @@
 package com.pfernand.pfmailler.config;
 
 import com.google.common.collect.ImmutableList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,17 +16,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.inject.Inject;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private List<String> allowedOrigins;
+    private final ConfigProperties configProperties;
 
-
-    @Autowired
-    public WebSecurityConfiguration(
-            @Value("#{'${cors.origin.allowed}'.split(',')}") List<String> allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
+    @Inject
+    public WebSecurityConfiguration(ConfigProperties configProperties) {
+        this.configProperties = configProperties;
     }
 
     @Override
@@ -43,7 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
     }
 
-    @Autowired
+    @Inject
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
     }
@@ -52,7 +49,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedOrigins(configProperties.getAllowedOrigins());
         configuration.setAllowedMethods(ImmutableList.of("GET","POST", "PUT", "OPTIONS"));
         configuration.setAllowedHeaders(
                 ImmutableList.of("Authorization", "Cache-Control", "Content-Type")
@@ -67,8 +64,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.builder()
-                        .username("pfernand")
-                        .password(new BCryptPasswordEncoder().encode("pfernand"))
+                        .username(configProperties.getAuthorisationKey())
+                        .password(new BCryptPasswordEncoder().encode(configProperties.getAuthorisationSecret()))
                         .roles("USER")
                         .build();
 
