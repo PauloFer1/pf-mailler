@@ -59,7 +59,7 @@ public class EmailController {
     })
     @RequestMapping(value = "/send", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity sendEmail(@RequestBody final Email emailParameters) throws Exception {
-        log.debug("POST /send with params: {}", emailParameters.toString());
+        log.info("POST /send with params: {}", emailParameters.toString());
         maillerServiceSpring.sendSimpleMessage(emailParameters);
         return ResponseEntity.ok(
                 MaillerResponse.builder()
@@ -85,7 +85,7 @@ public class EmailController {
     })
     @RequestMapping(value = "/emails", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity getEmails() throws Exception {
-        log.debug("GET /emails ");
+        log.info("GET /emails");
         return ResponseEntity.ok(
                 EmailListResponse.builder()
                     .currentTime(Instant.now(clock).toEpochMilli())

@@ -57,4 +57,28 @@ public class EmailMapperTest {
         assertTrue(email.isValid());
     }
 
+    @Test
+    public void mapDatesCanBeNull() throws SQLException {
+        // Given
+
+        // When
+        Mockito.when(resultSet.getString("FROM_EMAIL")).thenReturn(FROM_EMAIL);
+        Mockito.when(resultSet.getString("TO_EMAIL")).thenReturn(TO_EMAIL);
+        Mockito.when(resultSet.getString("BODY_EMAIL")).thenReturn(BODY_EMAIL);
+        Mockito.when(resultSet.getString("SUBJECT_EMAIL")).thenReturn(SUBJECT_EMAIL);
+        Mockito.when(resultSet.getString("SENT_TIME")).thenReturn(null);
+        Mockito.when(resultSet.getString("CREATED_AT")).thenReturn(null);
+        Mockito.when(resultSet.getBoolean("IS_VALID")).thenReturn(VALID);
+        Email email = emailMapper.map(resultSet, statementContext);
+
+        // Then
+        assertEquals(email.getFrom(), FROM_EMAIL);
+        assertEquals(email.getTo(), TO_EMAIL);
+        assertEquals(email.getBody(), BODY_EMAIL);
+        assertEquals(email.getSubject(), SUBJECT_EMAIL);
+        assertEquals(email.getSentTime(), null);
+        assertEquals(email.getCreatedAt(), null);
+        assertTrue(email.isValid());
+    }
+
 }
