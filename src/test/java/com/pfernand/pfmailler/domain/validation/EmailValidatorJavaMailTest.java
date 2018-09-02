@@ -43,7 +43,7 @@ public class EmailValidatorJavaMailTest {
     }
 
     @Test
-    public void isValidEmailTestInvalidEmailThrowsException() throws Exception {
+    public void isValidEmailTestInvalidEmailThrowsException() {
         // Given
         String invalidEmail = "paulo.fernandes@gmail.";
         Email email = Email.builder()

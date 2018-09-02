@@ -47,7 +47,7 @@ public class EmailController {
     @ApiImplicitParams({
             @ApiImplicitParam(
                     name = "Authorization",
-                    value = "Authorization",
+                    value = "Authorization  ",
                     required = true,
                     dataType = "string",
                     paramType = "header")
