@@ -6,9 +6,12 @@ import com.pfernand.pfmailler.rest.views.ErrorValue;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import javax.mail.internet.AddressException;
 
 @Slf4j
 @ControllerAdvice
@@ -51,6 +54,34 @@ public class MaillerExceptionHandler {
             final WebRequest request
     ) {
         log.error("Email Error. Cause: {}", ex.getMessage());
+        return respond(
+                request,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex,
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(
+            final MailException ex,
+            final WebRequest request
+    ) {
+        log.error("Email Error. Cause: {}", ex.getMessage());
+        return respond(
+                request,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ex,
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(AddressException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(
+            final AddressException ex,
+            final WebRequest request
+    ) {
+        log.error("Email validation Error. Cause: {}", ex.getMessage());
         return respond(
                 request,
                 HttpStatus.INTERNAL_SERVER_ERROR,

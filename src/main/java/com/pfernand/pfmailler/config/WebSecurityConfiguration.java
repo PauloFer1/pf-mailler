@@ -1,8 +1,10 @@
 package com.pfernand.pfmailler.config;
 
 import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,14 +22,10 @@ import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final ConfigProperties configProperties;
-
-    @Inject
-    public WebSecurityConfiguration(ConfigProperties configProperties) {
-        this.configProperties = configProperties;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -60,7 +58,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Override
+    @Primary
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.builder()

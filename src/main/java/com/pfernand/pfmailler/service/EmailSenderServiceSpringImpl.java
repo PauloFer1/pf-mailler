@@ -3,7 +3,6 @@ package com.pfernand.pfmailler.service;
 import com.pfernand.pfmailler.domain.EmailServiceJdbi;
 import com.pfernand.pfmailler.domain.validation.EmailValidator;
 import com.pfernand.pfmailler.model.Email;
-import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import java.time.LocalDateTime;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,7 +10,6 @@ import javax.inject.Named;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -23,26 +21,26 @@ public class EmailSenderServiceSpringImpl implements EmailSenderService {
     private final JavaMailSender javaMailSender;
     private final EmailServiceJdbi emailSaver;
     @Qualifier("emailValidatorJavaMail")
-    private final EmailValidator emailValidatorMx;
+    private final EmailValidator emailValidator;
 
 
     @Override
-    public void sendSimpleMessage(Email email) throws MaillerException {
+    public void sendSimpleMessage(Email email) throws Exception {
         log.info("Sending email to: {}", email.getTo());
         try {
-            emailValidatorMx.isValidEmail(email);
+            emailValidator.isValidEmail(email);
             email.setValid(true);
-            javaMailSender.send(buildMessage(email));
+            // TODO: this should be asynchronous
+            javaMailSender.send(map(email));
             email.setSentTime(LocalDateTime.now());
-        } catch (MailException e) {
-            throw new MaillerException("Email failed to send", e);
         } finally {
             email.setCreatedAt(LocalDateTime.now());
             emailSaver.saveEmail(email);
         }
     }
 
-    private SimpleMailMessage buildMessage(Email email) {
+    // TODO: Refactor to its own class
+    private SimpleMailMessage map(Email email) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email.getTo());
         simpleMailMessage.setSubject(email.getSubject());

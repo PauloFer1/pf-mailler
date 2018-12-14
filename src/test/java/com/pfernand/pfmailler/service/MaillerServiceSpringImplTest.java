@@ -3,7 +3,6 @@ package com.pfernand.pfmailler.service;
 import com.pfernand.pfmailler.domain.EmailServiceJdbi;
 import com.pfernand.pfmailler.domain.validation.EmailValidatorRealEmail;
 import com.pfernand.pfmailler.model.Email;
-import com.pfernand.pfmailler.rest.exceptions.MaillerException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,13 +58,13 @@ public class MaillerServiceSpringImplTest {
             .send(Mockito.any(SimpleMailMessage.class));
 
         //Then
-        assertThatExceptionOfType(MaillerException.class)
+        assertThatExceptionOfType(MailAuthenticationException.class)
             .isThrownBy(() -> maillerServiceSpring.sendSimpleMessage(email))
             .withMessageContaining(message);
     }
 
     @Test
-    public void sendSimpleMessageAndSaveThrowException() throws MaillerException {
+    public void sendSimpleMessageAndSaveThrowException() throws Exception {
         // Given
         String message = "Email failed to send";
 
@@ -74,14 +73,14 @@ public class MaillerServiceSpringImplTest {
             .send(Mockito.any(SimpleMailMessage.class));
 
         //Then
-        assertThatExceptionOfType(MaillerException.class)
+        assertThatExceptionOfType(MailAuthenticationException.class)
             .isThrownBy(() -> maillerServiceSpring.sendSimpleMessage(email))
             .withMessageContaining(message);
         Mockito.verify(emailSaver, Mockito.times(1)).saveEmail(email);
     }
 
     @Test
-    public void sendSimpleMessageAndSaveAllwaysSaveEmailAndSetTime() throws MaillerException {
+    public void sendSimpleMessageAndSaveAllwaysSaveEmailAndSetTime() throws Exception {
         // Given
 
         // When

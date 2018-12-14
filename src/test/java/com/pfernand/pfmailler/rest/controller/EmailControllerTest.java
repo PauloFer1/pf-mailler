@@ -62,7 +62,7 @@ public class EmailControllerTest {
     }
 
     @Test
-    public void sendEmailThrowsMaillerException() throws MaillerException {
+    public void sendEmailThrowsMaillerException() throws Exception {
         // Given
         Email email = Email.builder()
             .from("test.from@mail.com")

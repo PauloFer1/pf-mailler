@@ -11,5 +11,5 @@ public interface EmailValidator {
      * @return
      * @throws InvalidEmailException
      */
-    void isValidEmail(Email email) throws InvalidEmailException;
+    void isValidEmail(Email email) throws Exception;
 }

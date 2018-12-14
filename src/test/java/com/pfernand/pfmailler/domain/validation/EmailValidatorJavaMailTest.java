@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -52,8 +54,8 @@ public class EmailValidatorJavaMailTest {
 
         // When
         // Then
-        assertThatExceptionOfType(InvalidEmailException.class)
+        assertThatExceptionOfType(AddressException.class)
                 .isThrownBy(() -> emailValidatorJavaMail.isValidEmail(email))
-                .withMessageContaining(String.format("Invalid email: %s", invalidEmail));
+                .withMessageContaining("Domain ends with dot");
     }
 }
